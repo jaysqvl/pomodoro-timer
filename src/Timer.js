@@ -5,7 +5,6 @@ import PauseButton from './PauseButton';
 import SettingsButton from './SettingsButton';
  
 const red = "f54e4e";
-const green = "4aec8c";
 
 function Timer() {
     return (
