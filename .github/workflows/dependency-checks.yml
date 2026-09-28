@@ -59,4 +59,3 @@ jobs:
         run: yarn test --watchAll=false --runInBand
       - name: Production build
         run: yarn build
-
