@@ -1,0 +1,61 @@
+name: Dependency Checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: .
+    env:
+      CI: "true"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.19.0"
+          cache: npm
+          cache-dependency-path: package-lock.json
+      - name: Select the verified package manager
+        run: npm install --global npm@11.16.0 --ignore-scripts
+      - name: Install the immutable dependency tree
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: SVG security and loader contracts
+        run: npm run test:svg
+      - name: Existing application behavior
+        run: npm test -- --watchAll=false --runInBand
+      - name: Production build
+        run: npm run build
+
+  yarn-lock:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CI: "true"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.19.0"
+      - name: Select the supported Yarn Classic package manager
+        run: npm install --global yarn@1.22.22 --ignore-scripts
+      - name: Install the immutable Yarn tree
+        run: yarn install --frozen-lockfile --ignore-scripts --non-interactive
+      - name: SVG security and loader contracts
+        run: yarn test:svg
+      - name: Existing application behavior
+        run: yarn test --watchAll=false --runInBand
+      - name: Production build
+        run: yarn build
