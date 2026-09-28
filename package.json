@@ -33,6 +33,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "test:svg": "node --test scripts/check-svg.cjs",
+    "test:dev-tools": "node --test scripts/check-dev-tools.cjs",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
