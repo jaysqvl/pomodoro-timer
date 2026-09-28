@@ -32,6 +32,8 @@ jobs:
         run: npm ci --ignore-scripts --no-audit --no-fund
       - name: SVG security and loader contracts
         run: npm run test:svg
+      - name: Development server and transitive security contracts
+        run: npm run test:dev-tools
       - name: Existing application behavior
         run: npm test -- --watchAll=false --runInBand
       - name: Production build
@@ -55,6 +57,8 @@ jobs:
         run: yarn install --frozen-lockfile --ignore-scripts --non-interactive
       - name: SVG security and loader contracts
         run: yarn test:svg
+      - name: Development server and transitive security contracts
+        run: yarn test:dev-tools
       - name: Existing application behavior
         run: yarn test --watchAll=false --runInBand
       - name: Production build
